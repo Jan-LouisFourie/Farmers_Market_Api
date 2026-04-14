@@ -96,3 +96,10 @@ C:\Users\janlo\OneDrive\Desktop\Farmers_Market_Api\farmers_market_api\obj\Debug\
 C:\Users\janlo\OneDrive\Desktop\Farmers_Market_Api\farmers_market_api\obj\Debug\net10.0\farmers_market_api.genruntimeconfig.cache
 C:\Users\janlo\OneDrive\Desktop\Farmers_Market_Api\farmers_market_api\obj\Debug\net10.0\ref\farmers_market_api.dll
 C:\Users\janlo\OneDrive\Desktop\Farmers_Market_Api\farmers_market_api\obj\Debug\net10.0\farmers_market_api.sourcelink.json
+C:\Users\janlo\OneDrive\Desktop\Farmers_Market_Api\Farmers_market_api\bin\Debug\net10.0\Microsoft.OpenApi.dll
+C:\Users\janlo\OneDrive\Desktop\Farmers_Market_Api\Farmers_market_api\bin\Debug\net10.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\janlo\OneDrive\Desktop\Farmers_Market_Api\Farmers_market_api\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\janlo\OneDrive\Desktop\Farmers_Market_Api\Farmers_market_api\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\janlo\OneDrive\Desktop\Farmers_Market_Api\Farmers_market_api\obj\Debug\net10.0\farmers_market_api.csproj.AssemblyReference.cache
+C:\Users\janlo\OneDrive\Desktop\Farmers_Market_Api\Farmers_market_api\obj\Debug\net10.0\farmers_market_api.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\janlo\OneDrive\Desktop\Farmers_Market_Api\Farmers_market_api\obj\Debug\net10.0\farmers_.A320A0A9.Up2Date
