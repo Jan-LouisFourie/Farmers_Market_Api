@@ -1,0 +1,54 @@
+# Build results
+bin/
+obj/
+out/
+
+# Visual Studio files
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider / JetBrains IDE
+.idea/
+
+# Logs
+*.log
+
+# NuGet packages
+*.nupkg
+# Uncomment if you don’t want to store packages
+# packages/
+
+# Dependency directories
+node_modules/
+
+# Environment files
+*.env
+
+# Publish outputs
+publish/
+wwwroot/
+
+# Resharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# Backup & reports
+*.bak
+*.backup
+*.tmp
+*.temp
+*.patch
+*.diff
+
+# Coverage
+coverage/
+*.coverage
+*.coveragexml
+
+# Others
+*.dbmdl
+*.dbproj.schemaview
+*.jfm
