@@ -32,7 +32,7 @@ namespace farmers_market_api.Controllers
         }
 
         [HttpDelete]
-        public List<Farmer> DeleteFarmer([FromQuery] int farmerId)
+        public List<Farmer> Delete([FromQuery] int farmerId)
         {
             var farmer = farmers.FirstOrDefault(f => f.FarmerId == farmerId);
             if (farmer != null)
@@ -46,23 +46,20 @@ namespace farmers_market_api.Controllers
             }
         }
 
-        // [HttpPut]
-        // public List<Farmer> UpdateFarmer([FromBody] UpdateRequest request)
-        // {
-        //     if (farmers.Contains(request.OldName))
-        //     {
-        //         int index = farmers.IndexOf(request.OldName);
-                
-        //         if(index != -1)
-        //         {
-        //             farmers[index] = request.NewName;
-        //         }
-        //         return farmers;
-        //     }
-        //     else
-        //     {
-        //         return farmers;
-        //     }
-        // }
+        [HttpPut]
+        public Farmer UpdateFarmer([FromBody] Farmer updatedFarmer)
+        {
+            var farmer = farmers.FirstOrDefault(f => f.getFarmerId() == updatedFarmer.getFarmerId());
+            if (farmer != null)
+            {
+                farmer = updatedFarmer;
+                return farmer;
+            }
+            else
+            {
+                return null;
+            }
+
+        }
     }
 }

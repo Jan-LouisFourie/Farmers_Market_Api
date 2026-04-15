@@ -10,13 +10,13 @@ namespace farmers_market_api.Models
         static int idCounter = 1;
 
         public int FarmerId { get; set; } = idCounter++;
-        private string FullName { get; set; } = string.Empty;
-        private string Email { get; set; } = string.Empty;
-        private string PhoneNumber { get; set; } = string.Empty;
-        private string Location { get; set; } = string.Empty;
-        private string Province { get; set; } = string.Empty;
-        private double Rating { get; set; } = 0.0;
-        private bool IsVerified { get; set; } = false;
+        public string FullName { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = string.Empty;
+        public string Location { get; set; } = string.Empty;
+        public string Province { get; set; } = string.Empty;
+        public double Rating { get; set; } = 0.0;
+        public bool IsVerified { get; set; } = false;
 
         public Farmer(string fullName, string email, string phoneNumber, string location, string province, double rating, bool isVerified)
         {
@@ -31,6 +31,11 @@ namespace farmers_market_api.Models
 
         public Farmer()
         {
+        }
+
+        public int getFarmerId()
+        {
+            return FarmerId;
         }
 
     }
