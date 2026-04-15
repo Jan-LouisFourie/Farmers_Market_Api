@@ -19,45 +19,45 @@ namespace farmers_market_api.Controllers
         };
 
         [HttpGet]
-        public List<Farmer> GetListOfFarmers()
+        public IActionResult GetListOfFarmers()
         {
-            return farmers;
+            return Ok(farmers);
         }
 
         [HttpPost]
-        public List<Farmer> createfarmer([FromBody]Farmer farmer)
+        public IActionResult createfarmer([FromBody]Farmer farmer)
         {
             farmers.Add(farmer);
-            return farmers;
+            return Ok(farmers);
         }
 
         [HttpDelete]
-        public List<Farmer> Delete([FromQuery] int farmerId)
+        public IActionResult Delete([FromQuery] int farmerId)
         {
             var farmer = farmers.FirstOrDefault(f => f.FarmerId == farmerId);
             if (farmer != null)
             {
                 farmers.Remove(farmer);
-                return farmers;
+                return Ok(farmers)  ;
             }
             else
             {
-                return farmers;
+                return NotFound();
             }
         }
 
         [HttpPut]
-        public Farmer UpdateFarmer([FromBody] Farmer updatedFarmer)
+        public IActionResult UpdateFarmer([FromBody] Farmer updatedFarmer)
         {
             var farmer = farmers.FirstOrDefault(f => f.getFarmerId() == updatedFarmer.getFarmerId());
             if (farmer != null)
             {
                 farmer = updatedFarmer;
-                return farmer;
+                return Ok(farmer);
             }
             else
             {
-                return null;
+                return NotFound();
             }
 
         }
