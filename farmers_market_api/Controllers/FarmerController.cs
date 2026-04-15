@@ -11,27 +11,33 @@ namespace farmers_market_api.Controllers
     [Route("api/[controller]")]
     public class FarmerController : ControllerBase
     {
-        private List<string> farmers = new List<string>{ "Kobus", "Ben", "Jacob"};
+        private readonly List<Farmer> farmers = new List<Farmer>
+        {
+            new Farmer("John Doe", "john.doe@example.com", "123-456-7890", "123 Main St", "Ontario", 4.5, true),
+            new Farmer("Jane Smith", "jane.smith@example.com", "098-765-4321", "456 Oak Ave", "Quebec", 4.0, false),
+            new Farmer("Bob Johnson", "bob.johnson@example.com", "555-555-5555", "789 Pine Rd", "British Columbia", 4.8, true)
+        };
 
         [HttpGet]
-        public List<string> GetListOfFarmers()
+        public List<Farmer> GetListOfFarmers()
         {
             return farmers;
         }
 
         [HttpPost]
-        public List<string> createfarmer([FromBody]string name)
+        public List<Farmer> createfarmer([FromBody]Farmer farmer)
         {
-            farmers.Add(name);
+            farmers.Add(farmer);
             return farmers;
         }
 
         [HttpDelete]
-        public List<string> DeleteFarmer([FromQuery] string name)
+        public List<Farmer> DeleteFarmer([FromQuery] int farmerId)
         {
-            if (!farmers.Contains(name))
+            var farmer = farmers.FirstOrDefault(f => f.FarmerId == farmerId);
+            if (farmer != null)
             {
-                farmers.Remove(name);
+                farmers.Remove(farmer);
                 return farmers;
             }
             else
@@ -40,23 +46,23 @@ namespace farmers_market_api.Controllers
             }
         }
 
-        [HttpPut]
-        public List<string> UpdateFarmer([FromBody] UpdateRequest request)
-        {
-            if (farmers.Contains(request.OldName))
-            {
-                int index = farmers.IndexOf(request.OldName);
+        // [HttpPut]
+        // public List<Farmer> UpdateFarmer([FromBody] UpdateRequest request)
+        // {
+        //     if (farmers.Contains(request.OldName))
+        //     {
+        //         int index = farmers.IndexOf(request.OldName);
                 
-                if(index != -1)
-                {
-                    farmers[index] = request.NewName;
-                }
-                return farmers;
-            }
-            else
-            {
-                return farmers;
-            }
-        }
+        //         if(index != -1)
+        //         {
+        //             farmers[index] = request.NewName;
+        //         }
+        //         return farmers;
+        //     }
+        //     else
+        //     {
+        //         return farmers;
+        //     }
+        // }
     }
 }
