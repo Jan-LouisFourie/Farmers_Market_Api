@@ -28,7 +28,7 @@ namespace farmers_market_api.Controllers
         public IActionResult createfarmer([FromBody]Farmer farmer)
         {
             farmers.Add(farmer);
-            return Ok(farmers);
+            return Created("", farmers);
         }
 
         [HttpDelete]
@@ -38,7 +38,7 @@ namespace farmers_market_api.Controllers
             if (farmer != null)
             {
                 farmers.Remove(farmer);
-                return Ok(farmers)  ;
+                return Ok(farmer)  ;
             }
             else
             {
