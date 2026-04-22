@@ -71,7 +71,7 @@ namespace farmers_market_api.Repositories
 
         public ProduceListing AddProduce(ProduceListing produce)
         {
-            if (produce.IsNullOrEmpty(produce.ProduceName)){throw new InvalidProduceFormatException("Produce listing cannot be null or empty.");}
+            if (string.IsNullOrEmpty(produce.ProduceName)){throw new InvalidProduceFormatException("Produce listing cannot be null or empty.");}
             if (produce.PricePerKg <= 0) { throw new InvalidProduceFormatException("Price per kg must be greater than zero."); }
             if (produce.QuantityKg <= 0) { throw new InvalidProduceFormatException("Quantity in kg cannot be negative."); }
 
