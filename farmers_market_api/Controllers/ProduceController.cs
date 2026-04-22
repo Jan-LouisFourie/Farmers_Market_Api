@@ -4,7 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using farmers_market_api.Enums;
 using farmers_market_api.Models;
+using farmers_market_api.Repositories;
+using farmers_market_api.Structs;
 using Microsoft.AspNetCore.Mvc;
+using farmers_market_api.Exceptions;
 
 namespace farmers_market_api.Controllers
 {
@@ -12,40 +15,36 @@ namespace farmers_market_api.Controllers
     [Route("api/[controller]")]
     public class ProduceController : ControllerBase
     {
-        private readonly List<ProduceListing> produceListings = new List<ProduceListing>()
-        {
-            new (1, 1, "Tomatoes", Category.Vegetables, 2.5, 100, true, DateTime.Now.AddDays(-5), DateTime.Now.AddDays(-3), "Fresh and juicy tomatoes."),
-            new (2, 2, "Strawberries", Category.Fruits, 4.0, 50, true, DateTime.Now.AddDays(-7), DateTime.Now.AddDays(-4), "Sweet and ripe strawberries."),
-            new (3, 3, "Carrots", Category.Vegetables, 1.8, 200, true, DateTime.Now.AddDays(-10), DateTime.Now.AddDays(-6), "Crunchy and fresh carrots."),
-            new (4, 1, "Apples", Category.Fruits, 3.2, 150, true, DateTime.Now.AddDays(-3), DateTime.Now.AddDays(-1), "Crisp and delicious apples."),
-            new (5, 2, "Lettuce", Category.Vegetables, 1.5, 80, true, DateTime.Now.AddDays(-2), DateTime.Now.AddDays(-1), "Fresh green lettuce leaves."),
-            new (6, 3, "Potatoes", Category.Vegetables, 1.0, 300, true, DateTime.Now.AddDays(-8), DateTime.Now.AddDays(-5), "Organic potatoes, perfect for baking."),
-            new (7, 1, "Oranges", Category.Fruits, 2.8, 120, true, DateTime.Now.AddDays(-6), DateTime.Now.AddDays(-3), "Juicy oranges rich in vitamin C."),
-            new (8, 2, "Broccoli", Category.Vegetables, 2.2, 90, true, DateTime.Now.AddDays(-4), DateTime.Now.AddDays(-2), "Nutritious broccoli florets."),
-            new (9, 3, "Bananas", Category.Fruits, 1.9, 200, true, DateTime.Now.AddDays(-9), DateTime.Now.AddDays(-6), "Ripe bananas, great for smoothies."),
-            new (10, 1, "Spinach", Category.Vegetables, 2.0, 60, true, DateTime.Now.AddDays(-1), DateTime.Now.AddDays(-0.5), "Tender spinach leaves.")
-        };
+        private readonly ProduceRepository _produceRepository = new ProduceRepository();
 
         [HttpGet]
         public IActionResult GetListOfProduce()
         {
-            return Ok(produceListings);
+            return Ok(_produceRepository.GetAllProduce());
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetFormattedSummary(int id)
-        {
-            var produce = produceListings.FirstOrDefault(p => p.ListingId == id);
-            
-            if (produce == null) return NotFound();
-
-            return Ok(produce);
+        public IActionResult GetProduceById(int id)
+        {       
+            try
+            {
+                var produce = _produceRepository.GetProduceById(id);
+                return Ok(produce);
+            }
+            catch (ListingNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("{id}/summary")]
         public IActionResult GetProduceSummary(int id)
         {
-            var produce = produceListings.FirstOrDefault(p => p.ListingId == id);
+            var produce = _produceRepository.GetProduceById(id);
 
             if (produce == null) return NotFound();
 
@@ -55,7 +54,7 @@ namespace farmers_market_api.Controllers
         [HttpGet("{id}/revenue")]
         public IActionResult GetPotentialRevenue(int id)
         {
-            var produce = produceListings.FirstOrDefault(p => p.ListingId == id);
+            var produce = _produceRepository.GetProduceById(id);
 
             if (produce == null) return NotFound();
 
@@ -63,33 +62,54 @@ namespace farmers_market_api.Controllers
         }
 
         [HttpGet("/available")]
-        public IActionResult GetAvailableProduce([FromQuery] string name)
+        public IActionResult GetAvailableProduce()
         {
-            List<ProduceListing> availableProduce = new List<ProduceListing>();
-            for (int i = 0; i < produceListings.Count; i++)
-            {
-                if (produceListings[i].IsAvailable)
-                {
-                    availableProduce.Add(produceListings[i]);
-                }
-            }
-            return Ok(availableProduce);
+            return Ok(_produceRepository.GetAvailableProduce());
 
         }
 
         [HttpGet("category/{category}")]
         public IActionResult GetProduceByCategory([FromRoute] Category category)
         {
-            var filteredList = produceListings.Where(p => p.Category == category).ToList();
-            return Ok(filteredList);
+            return Ok(_produceRepository.GetProduceByCategory(category));
 
         }
 
         [HttpPost]
-        public IActionResult CreateProduceListing([FromBody] ProduceListing listing)
+        public IActionResult CreateProduceListing([FromBody] CreateProduceDTO listing)
         {
-            produceListings.Add(listing);
-            return Created($"localhost:5005/api/produce/{listing.ListingId}", produceListings);
+            if (listing.PricePerKg <= 0 || listing.ProduceName.Length <= 0)
+            {
+                return BadRequest("Price per kg and name must be greater than zero.");
+            }
+
+            try
+            {
+                var newListing = new ProduceListing
+                {
+                    FarmerId = listing.FarmerId,
+                    ProduceName = listing.ProduceName,
+                    Category = listing.Category,
+                    PricePerKg = listing.PricePerKg,
+                    QuantityKg = listing.QuantityKg,
+                    IsAvailable = listing.IsAvailable,
+                    HarvestDate = listing.HarvestDate,
+                    DateListed = listing.DateListed,
+                    Description = listing.Description
+                };
+
+                _produceRepository.AddProduce(newListing);
+                return Created($"localhost:5005/api/produce/{newListing.ListingId}", newListing);
+            }
+            catch (InvalidProduceFormatException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+             catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+             }
+
         }
     }
 }

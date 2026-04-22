@@ -11,12 +11,12 @@ namespace farmers_market_api.Structs
         public string FarmName;
         public Provinces Province;
         public string Town;
-    }
 
-    public FarmerLocation(string farmName, Provinces province, string town)
-    {
-        FarmName = farmName;
-        Province = province;
-        Town = town;
+        public FarmerLocation(string farmName, Provinces province, string town)
+        {
+            FarmName = farmName;
+            Province = province;
+            Town = town;
+        }
     }
 }
